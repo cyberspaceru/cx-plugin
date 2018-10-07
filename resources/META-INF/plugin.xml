@@ -2,7 +2,6 @@
     <id>com.your.company.unique.plugin.id</id>
     <name>CXPlugin</name>
     <version>1.0</version>
-    <depends>com.intellij.modules.xml</depends>
     <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
 
     <description><![CDATA[
@@ -27,11 +26,19 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <completion.contributor language="Gherkin"
-                                implementationClass="ru.cyberspace.plugin.context.completions.PageEntryCompletionContributor"/>
+                                implementationClass="ru.cyberspace.plugin.context.completions.page.PageEntryCompletionContributor"/>
+        <completion.contributor language="Gherkin"
+                                implementationClass="ru.cyberspace.plugin.context.completions.action.ActionEntryCompletionContributor"/>
+        <!--<psi.referenceContributor language="Gherkin"-->
+                                  <!--implementation="ru.cyberspace.plugin.context.references.page.PageEntryReferenceContributor"/>-->
     </extensions>
 
     <actions>
         <!-- Add your actions here -->
     </actions>
+
+    <extensions defaultExtensionNs="org.jetbrains.plugins.cucumber.steps">
+        <cucumberJvmExtensionPoint implementation="ru.cyberspace.plugin.context.TestExtension"/>
+    </extensions>
 
 </idea-plugin>

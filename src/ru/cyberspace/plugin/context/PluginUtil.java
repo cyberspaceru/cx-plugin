@@ -8,36 +8,32 @@ import com.intellij.psi.PsiNameValuePair;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class JavaUtil {
+public class PluginUtil {
+    public static final String RULEZZZZ = "IntellijIdeaRulezzz";
 
     @Nullable
-    private static String getAnnotationName(@NotNull final PsiAnnotation annotation) {
+    private static String getAnnotationName(@NotNull PsiAnnotation annotation) {
         final Ref<String> qualifiedAnnotationName = new Ref<>();
         ApplicationManager.getApplication().runReadAction(() -> {
-                    String qualifiedName = annotation.getQualifiedName();
-                    qualifiedAnnotationName.set(qualifiedName);
-                }
-        );
+            String qualifiedName = annotation.getQualifiedName();
+            qualifiedAnnotationName.set(qualifiedName);
+        });
         return qualifiedAnnotationName.get();
     }
 
     @Nullable
-    public static PsiAnnotationMemberValue getAnnotationTitle(@NotNull final PsiAnnotation stepAnnotation) {
-        final PsiNameValuePair[] attributes = stepAnnotation.getParameterList().getAttributes();
-        PsiNameValuePair valuePair = null;
+    public static PsiAnnotationMemberValue getAnnotationAttributeValue(@NotNull PsiAnnotation stepAnnotation, @NotNull String name) {
+        PsiNameValuePair[] attributes = stepAnnotation.getParameterList().getAttributes();
         if (attributes.length > 0) {
             for (int i = 1; i < attributes.length; i++) {
                 PsiNameValuePair pair = attributes[i];
                 final String pairName = pair.getName();
-                if (pairName != null && pairName.equals("title")) {
-                    valuePair = pair;
-                    break;
+                if (pairName != null && pairName.equals(name)) {
+                    return pair.getValue();
                 }
             }
-            if (valuePair == null) {
-                valuePair = attributes[0];
-            }
+            return attributes[0].getValue();
         }
-        return valuePair != null ? valuePair.getValue() : null;
+        return null;
     }
 }
